@@ -1,18 +1,54 @@
 const balance = document.querySelector("#balance");
 const money_plus = document.querySelector("#money-plus");
 const money_minus = document.querySelector("#money-minus");
+const plusBtn = document.querySelector("#income");
+const minusBtn = document.querySelector("#expense");
 const list = document.querySelector("#list");
 const form = document.querySelector("#form");
 const text = document.querySelector("#text");
 const amount = document.querySelector("#amount");
+const dateText = document.querySelector("#date");
 
 const localStorageTransactions = JSON.parse(
   localStorage.getItem("transactions")
 );
 
+// get date and change text
+function getFirstLastDayOfWeek() {
+  const today = new Date();
+  const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  const day = today.getDate();
+  const firstDayOfWeek = new Date(today);
+  const lastDayOfWeek = new Date(today);
+
+  // Adjust to get the first day of the week (Monday)
+  firstDayOfWeek.setDate(day - dayOfWeek + (dayOfWeek === 0 ? -6 : 1));
+
+  // Adjust to get the last day of the week (Sunday)
+  lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
+
+  return {
+    firstDay: {
+      day: firstDayOfWeek.getDate(),
+      month: firstDayOfWeek.toLocaleString("en-us", { month: "short" }),
+    },
+    lastDay: {
+      day: lastDayOfWeek.getDate(),
+      month: lastDayOfWeek.toLocaleString("en-us", { month: "short" }),
+    },
+  };
+}
+// add to the html
+const { firstDay, lastDay } = getFirstLastDayOfWeek();
+console.log("First day of the week:", firstDay);
+console.log("Last day of the week:", lastDay);
+dateText.innerHTML = `From ${firstDay.day} of ${firstDay.month} to, ${lastDay.day} of ${lastDay.month}`;
+
+/* ====================== */
+
 // check if there are some transactions in storage
 let transactions =
-  localStorage.getItem("transaction") !== null ? localStorageTransactions : [];
+  localStorage.getItem("transactions") !== null ? localStorageTransactions : [];
 
 // Add trasaction
 const addTransaction = (e) => {
@@ -37,16 +73,23 @@ const addTransaction = (e) => {
 
     text.value = "";
     amount.value = "";
+    plusBtn.checked = false;
+    minusBtn.checked = false;
   }
 };
 
 // ID Generator with crypto built in javascript API
-const generateID = () => crypto.randomUUID();
+const generateID = () => parseInt(Math.random() * 1000);
 
 // Add transactions to DOM list
 const addTransactionDOM = (transaction) => {
   // get the sign
-  const sign = transaction.amount < 0 ? "-" : "+";
+
+  if (minusBtn.checked === true) {
+    transaction.amount = -transaction.amount;
+  }
+
+  // const sign = transaction.amount < 0 ? "-" : "+";
 
   const item = document.createElement("li");
 
@@ -54,14 +97,15 @@ const addTransactionDOM = (transaction) => {
   item.classList.add(transaction.amount < 0 ? "minus" : "plus");
 
   item.innerHTML = `
-  ${transaction.text} <span>${sign}${Math.abs(
+  ${transaction.text} <span>${Math.abs(
     transaction.amount
-  )}</span><button class="delete-btn"><i class="bi bi-trash3"></i></button>`;
-
+  )}</span><button class="delete-btn" onclick=removeTransactions(${
+    transaction.id
+  })><i class="bi bi-trash3"></i></button>`;
   //   get created btn and give event listener
-  const deleteBtn = item.querySelector(".delete-btn");
-  console.log(deleteBtn);
-  deleteBtn.addEventListener("click", removeTransactions);
+  list.appendChild(item);
+
+  item.dataset.transactionId = transaction.id;
 };
 
 // Update balance, income and expense
@@ -96,6 +140,7 @@ const updateValues = () => {
 
 // remove transaction
 const removeTransactions = (id) => {
+  console.log(id);
   transactions = transactions.filter((transaction) => transaction.id !== id);
   updateLocalStorage();
   init();
