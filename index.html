@@ -22,71 +22,99 @@
     <!-- title -->
     <title>Week expense tracker</title>
   </head>
-  <body>
-    <nav>
-      <a href="./Public/pages/history.html">History</a>
-    </nav>
-    <header class="header">
-      <h2>Week expense tracker</h2>
-      <p>
-        This app will track and save your bills of the week. Every monday will
-        start to 0 again
-      </p>
-    </header>
+  <body class="bg-light bg-gradient">
+    <!-- navbar -->
+    <!-- <nav class="navbar navbar-light bg-light mb-5 justify-content-center">
+      <a class="navbar-brand" href="./Public/pages/history.html">History</a>
+    </nav> -->
+    <!-- header text info -->
+    <div class="px-2 py-2 my-3 text-center">
+      <h1 class="display-5 fw-bold text-primary">Week expense tracker</h1>
+      <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">
+          This app will track and save your bills of the week. Every monday will
+          start to 0 again.
+        </p>
+      </div>
+      <h4>Week: <span id="date"></span></h4>
+    </div>
+    <div class="container w-sm-100 w-lg-50">
+      <!-- balance -->
+      <h1 class="text-center" id="balance">$0.00</h1>
 
-    <div class="container">
-      <h4>Week: <span id="date">From 12th to 18 of december</span></h4>
-      <h1 id="balance">$0.00</h1>
-
-      <div class="inc-exp-container">
-        <div>
+      <div
+        class="row w-75 justify-content-center align-items-center p-4 w-25 m-auto text-center border border-2 rounded-2 shadow-sm"
+      >
+        <div class="col">
           <h4>Income</h4>
           <p id="money-plus" class="money plus">+$0.00</p>
         </div>
-        <div>
+        <div class="col">
           <h4>Expense</h4>
           <p id="money-minus" class="money minus">-$0.00</p>
         </div>
       </div>
 
-      <h3>History</h3>
-      <ul id="list" class="list">
-        <!-- <li class="minus">
-          Cash <span>-$400</span><button class="delete-btn">x</button>
-        </li> -->
-      </ul>
+      <!-- add transaction -->
+      <div class="container my-5 p-2">
+        <h3 class="text-center">Add new transaction</h3>
+        <form
+          id="form"
+          class="w-lg-75 p-4 bg-black bg-opacity-10 mx-auto text-center"
+        >
+          <div class="form-control-plaintext border-top-0 border-primary p-0">
+            <input
+              type="text"
+              class="form-control-plaintext"
+              id="text"
+              placeholder="Enter your bill..."
+            />
+          </div>
+          <div class="form-control bg-transparent border-0">
+            <fieldset class="form-group">
+              <div class="d-flex justify-content-around m-2">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="bill"
+                    id="income"
+                    value="minus"
+                  />
+                  <label class="form-check-label" for="income">income</label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="bill"
+                    id="expense"
+                    value="plus"
+                  />
+                  <label class="form-check-label" for="expense">expense</label>
+                </div>
+              </div>
+            </fieldset>
 
-      <h3>Add new transaction</h3>
-      <form id="form">
-        <div class="form-control">
-          <label for="text">Text</label>
-          <input type="text" id="text" placeholder="Enter text..." />
-        </div>
-        <div class="form-control">
-          <input
-            type="radio"
-            id="income"
-            name="bill"
-            value="minus"
-            title="minus"
-          />
-          <label for="minus"
-            ><i class="bi bi-plus-circle-fill"></i><span>income</span></label
-          ><br />
-          <input
-            type="radio"
-            id="expense"
-            name="bill"
-            value="plus"
-            title="plus"
-          />
-          <label for="plus"
-            ><i class="bi bi-dash-circle-fill"></i><span>expense</span></label
-          ><br />
-          <input type="number" id="amount" placeholder="Enter amount..." />
-        </div>
-        <button class="btn">Add transaction</button>
-      </form>
+            <input
+              type="number"
+              class="form-control bg-black bg-opacity-10 w-75 mx-auto"
+              id="amount"
+              placeholder="Enter amount..."
+            />
+          </div>
+          <button class="btn btn-primary">Add transaction</button>
+        </form>
+      </div>
+      <!-- historial -->
+      <div class="container">
+        <h3>History</h3>
+        <ul id="list" class="list-group-flush d-grid gap-3">
+          <!-- <li class="minus">
+                Cash <span>-$400</span><button class="delete-btn">x</button>
+              </li> -->
+        </ul>
+      </div>
     </div>
     <script src="app.js"></script>
     <script

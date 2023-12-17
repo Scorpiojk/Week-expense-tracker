@@ -93,16 +93,32 @@ const addTransactionDOM = (transaction) => {
 
   const item = document.createElement("li");
 
+  // bootsrap classes
+  item.classList.add(
+    "bg-black",
+    "bg-opacity-10",
+    "border-3",
+    "border-start",
+    "p-2",
+    "list-group-item",
+    "d-flex",
+    "flex-row",
+    "justify-content-evenly",
+    "align-items-center"
+  );
   // add class based on value
-  item.classList.add(transaction.amount < 0 ? "minus" : "plus");
+  item.classList.add(
+    transaction.amount < 0 ? "border-danger" : "border-success"
+  );
 
   item.innerHTML = `
-  ${transaction.text} <span>${Math.abs(
-    transaction.amount
-  )}</span><button class="delete-btn" onclick=removeTransactions(${
+  <div class="flex-fill p-2">
+    ${transaction.text} <span>${Math.abs(transaction.amount)}</span>
+  </div>
+  <button class="btn btn-outline-danger" onclick=removeTransactions(${
     transaction.id
-  })><i class="bi bi-trash3"></i></button>`;
-  //   get created btn and give event listener
+  })><i class="bi bi-trash3" fill="currentColor"></i></button>`;
+
   list.appendChild(item);
 
   item.dataset.transactionId = transaction.id;
